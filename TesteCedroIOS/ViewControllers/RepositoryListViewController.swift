@@ -44,7 +44,12 @@ class RepositoryListViewController: BaseViewController {
     func nextPage() {
         GitWS.getRepositories(repositoryResult: self.repositoryResult) { (success, message, result) in
             if success == true {
-                self.repositoryResult?.merge(result: result!)
+                if self.repositoryResult != nil {
+                    self.repositoryResult?.merge(result: result!)
+
+                }else {
+                    self.repositoryResult = result
+                }
                 self.repositoryTableView.reloadData()
             }
         }

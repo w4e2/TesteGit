@@ -33,11 +33,8 @@ class InitViewController: UIViewController {
     }
     func getRepositoryList() {
         GitWS.getRepositories(repositoryResult: nil) { (success, message, result) in
-            if success == true {
-                
-                self.performSegue(withIdentifier: "ShowGitList", sender: result)
-                
-            }
+            self.performSegue(withIdentifier: "ShowGitList", sender: result)
+
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
