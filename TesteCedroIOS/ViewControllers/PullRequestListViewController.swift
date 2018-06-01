@@ -8,7 +8,7 @@
 
 import UIKit
 import SkeletonView
-
+import UIEmptyState
 class PullRequestListViewController: BaseViewController {
     var selectedItem: Items?
     var arrayPullRequest: [PullRequest] = []
@@ -18,8 +18,8 @@ class PullRequestListViewController: BaseViewController {
         super.viewWillAppear(animated)
         self.navigationItem.title = selectedItem?.name
         self.addRefreshControlTo(scrollView: pullRequestTableView)
-
-
+        
+        
     }
     override func refreshPulledReloadData() {
         self.getPullRequests()
@@ -30,54 +30,56 @@ class PullRequestListViewController: BaseViewController {
         pullRequestTableView.estimatedRowHeight = 150
         placeHolderTableView.rowHeight = UITableViewAutomaticDimension
         placeHolderTableView.estimatedRowHeight = 150
-        
         self.showSkeleton()
+        
         self.getPullRequests()
         // Do any additional setup after loading the view.
-       
+        
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     func getPullRequests() {
+        
         guard selectedItem != nil else {
             return
         }
         GitWS.getPullRequestList(item: selectedItem!) { (success, message, result) in
-
+            
             if success == true {
                 self.arrayPullRequest = result!
                 self.pullRequestTableView.reloadData()
             }
             self.hidSkeletonView()
             self.refreshControl.endRefreshing()
-
+            self.reloadEmptyStateForTableView(self.pullRequestTableView)
+            
         }
     }
     func hidSkeletonView() {
         self.placeHolderTableView.isHidden = true
-
+        
         self.placeHolderTableView.hideSkeleton()
     }
     func showSkeleton() {
         self.placeHolderTableView.isHidden = false
-
+        
         let gradient = SkeletonGradient(baseColor: UIColor(white: 0.2, alpha: 1))
         let animation = SkeletonAnimationBuilder().makeSlidingAnimation(withDirection: .leftRight)
         self.placeHolderTableView.showAnimatedGradientSkeleton(usingGradient: gradient, animation: animation)
     }
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destinationViewController.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 extension PullRequestListViewController: UITableViewDelegate,UITableViewDataSource,SkeletonTableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -93,7 +95,7 @@ extension PullRequestListViewController: UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let request = arrayPullRequest[indexPath.row]
-
+        
         guard let urlString = request.htmlUrl else {
             return
         }
@@ -104,9 +106,9 @@ extension PullRequestListViewController: UITableViewDelegate,UITableViewDataSour
             
         })
     }
-
+    
     func collectionSkeletonView(_ skeletonView: UITableView, cellIdenfierForRowAt indexPath: IndexPath) -> ReusableCellIdentifier {
         return "PullRequestTableViewCell"
     }
-
+    
 }

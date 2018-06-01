@@ -11,6 +11,8 @@ pod 'SwiftyJSON'
     pod 'AlamofireImage'
     pod 'SkeletonView'
     pod 'lottie-ios'
+    pod 'UIEmptyState'
+
   target 'TesteCedroIOSTests' do
     inherit! :search_paths
     # Pods for testing

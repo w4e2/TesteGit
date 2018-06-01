@@ -18,12 +18,12 @@ class RepositoryListViewController: BaseViewController {
         repositoryTableView.rowHeight = UITableViewAutomaticDimension
         repositoryTableView.estimatedRowHeight = 150
         self.addRefreshControlTo(scrollView: repositoryTableView)
-
+        
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "Swift"
-
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -77,7 +77,7 @@ extension RepositoryListViewController: UITableViewDelegate,UITableViewDataSourc
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = repositoryResult!.items![indexPath.row]
-
+        
         self.performSegue(withIdentifier: "ShowPullRequestList", sender: item)
     }
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
